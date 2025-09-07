@@ -1,2 +1,2 @@
 # ai-matchmaker
-Repository for Matchmaker App
+Сервис знакомств
