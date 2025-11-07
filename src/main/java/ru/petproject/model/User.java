@@ -6,4 +6,6 @@ public class User {
     private Integer age;
     private String description;
     private String city;
+    private Double latitude;
+    private Double longtitude;
 }
