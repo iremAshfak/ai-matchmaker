@@ -11,5 +11,6 @@ public class Message {
 
     private String messageText;
 
+    private LocalDateTime createdAt;
 }
 
