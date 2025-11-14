@@ -9,7 +9,7 @@ public class Message {
 
     private Long toUserId;
 
-    private String text;
+    private String messageText;
 
     private LocalDateTime createdAt;
 }
