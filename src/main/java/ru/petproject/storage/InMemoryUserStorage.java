@@ -75,4 +75,24 @@ public class InMemoryUserStorage implements UserStorage {
         log.debug("Обновлен пользователь с Id {}", newUser.getId());
         return oldUser;
     }
+
+    private long getNextId() {
+        long currentMaxId = users.keySet()
+                .stream()
+                .mapToLong(id -> id)
+                .max()
+                .orElse(0);
+        return ++currentMaxId;
+    }
+
+    @Override
+    public void remove(Long id) {
+        users.remove(id);
+        log.debug("Пользователь с id = {} удален", id);
+    }
+
+    @Override
+    public Boolean isUserIdExists(Long id) {
+        return users.containsKey(id);
+    }
 }
