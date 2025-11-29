@@ -1,6 +1,7 @@
 package ru.petproject.model;
 
 import lombok.Data;
+import ru.petproject.model.enums.Genders;
 
 @Data
 public class User {
@@ -8,9 +9,9 @@ public class User {
 
     private String name;
 
-    private enum gender;
+    private Genders gender;
 
-    private enum preferredGender;
+    private Genders preferredGender;
 
     private Integer age;
 
