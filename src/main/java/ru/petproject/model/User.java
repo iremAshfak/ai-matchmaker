@@ -7,6 +7,10 @@ import ru.petproject.model.enums.Genders;
 public class User {
     private Long id;
 
+    private String email;
+
+    private String password;
+
     private String name;
 
     private Genders gender;
@@ -17,9 +21,7 @@ public class User {
 
     private String description;
 
-    private String city;
-
     private Double latitude;
 
-    private Double longtitude;
+    private Double longitude;
 }
