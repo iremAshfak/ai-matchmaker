@@ -8,6 +8,10 @@ public class User {
 
     private String name;
 
+    private enum gender;
+
+    private enum preferredGender;
+
     private Integer age;
 
     private String description;
