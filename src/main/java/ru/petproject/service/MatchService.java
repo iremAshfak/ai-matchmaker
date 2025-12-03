@@ -40,7 +40,6 @@ public class MatchService {
             throw new DuplicateSwipeException("Already swiped this user");
         }
 
-        // Сохраняем свайп
         Swipe swipe = new Swipe();
         swipe.setSwiper(swiper);
         swipe.setSwiped(swiped);
@@ -48,7 +47,6 @@ public class MatchService {
         swipe.setSwipeTime(LocalDateTime.now());
         swipeRepository.save(swipe);
 
-        // Проверяем на мэтч
         boolean isMatch = false;
         if (liked) {
             isMatch = checkForMatch(swiper, swiped);
@@ -58,11 +56,9 @@ public class MatchService {
     }
 
     private boolean checkForMatch(User user1, User user2) {
-        // Ищем взаимный лайк
         Optional<Swipe> mutualSwipe = swipeRepository.findBySwiperAndSwiped(user2, user1);
 
         if (mutualSwipe.isPresent() && mutualSwipe.get().isLiked()) {
-            // Создаем мэтч
             createMatch(user1, user2);
             return true;
         }
@@ -77,7 +73,6 @@ public class MatchService {
         match.setMatchingTime(LocalDateTime.now());
         matchRepository.save(match);
 
-        // Отправляем уведомления
         notificationService.notifyAboutMatch(user1, user2);
         notificationService.notifyAboutMatch(user2, user1);
     }
@@ -86,8 +81,7 @@ public class MatchService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
-        // Получаем пользователей, которых еще не свайпали
-        // с учетом предпочтений по полу, возрасту, локации
+
         return userRepository.findPotentialMatches(
                 user.getId(),
                 user.getPreferredGender(),
