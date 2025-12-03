@@ -26,10 +26,10 @@ public class MatchController {
             @AuthenticationPrincipal UserDetails userDetails) {
 
         Long userId = Long.parseLong(userDetails.getUsername());
-        SwipeDTO result = matchingService.swipe(
+        SwipeResult result = matchingService.swipe(
                 userId,
                 request.getSwipedUserId(),
-                request.isLiked()
+                request.isMatched()
         );
 
         return ResponseEntity.ok(result);
