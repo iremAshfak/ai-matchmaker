@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-public class User {
+public class User  {
     private Long id;
 
     private String email;
@@ -32,12 +32,4 @@ public class User {
     private Double longitude;
 
     private AuthRole role;
-
-    private boolean enabled = true;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
-    }
-
 }
