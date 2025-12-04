@@ -26,7 +26,7 @@ public class MatchController {
             @AuthenticationPrincipal UserDetails userDetails) {
 
         Long userId = Long.parseLong(userDetails.getUsername());
-        SwipeResult result = matchingService.swipe(
+        SwipeDTO result = matchingService.swipe(
                 userId,
                 request.getSwipedUserId(),
                 request.isMatched()

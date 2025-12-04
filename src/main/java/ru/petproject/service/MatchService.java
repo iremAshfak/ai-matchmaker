@@ -3,6 +3,9 @@ package ru.petproject.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.petproject.dto.SwipeDTO;
+import ru.petproject.exception.DuplicateSwipeException;
+import ru.petproject.exception.NotFoundException;
 import ru.petproject.model.Match;
 import ru.petproject.model.Swipe;
 import ru.petproject.model.User;
@@ -27,23 +30,22 @@ public class MatchService {
     @Autowired
     private NotificationService notificationService;
 
-    public SwipeResult swipe(Long swiperId, Long swipedId, boolean liked) {
-        User swiper = userRepository.findById(swiperId)
+    public SwipeDTO swipe(Long user1Id, Long user2Id, boolean liked) {
+        User swiper = userRepository.findById(user1Id)
                 .orElseThrow(() -> new NotFoundException("Swiper not found"));
 
-        User swiped = userRepository.findById(swipedId)
+        User swiped = userRepository.findById(user2Id)
                 .orElseThrow(() -> new NotFoundException("Swiped user not found"));
 
-        // Проверяем, не свайпали ли уже
-        Optional<Swipe> existingSwipe = swipeRepository.findBySwiperAndSwiped(swiper, swiped);
+        Optional<Swipe> existingSwipe = swipeRepository.findByUsers(user1, user2);
         if (existingSwipe.isPresent()) {
             throw new DuplicateSwipeException("Already swiped this user");
         }
 
         Swipe swipe = new Swipe();
-        swipe.setSwiper(swiper);
-        swipe.setSwiped(swiped);
-        swipe.setLiked(liked);
+        swipe.setUser1(swiper);
+        swipe.setUser2(swiped);
+        swipe.setSwipeResult(liked);
         swipe.setSwipeTime(LocalDateTime.now());
         swipeRepository.save(swipe);
 
@@ -52,13 +54,13 @@ public class MatchService {
             isMatch = checkForMatch(swiper, swiped);
         }
 
-        return new SwipeResult(swipe, isMatch);
+        return new SwipeDTO(swipe, isMatch);
     }
 
     private boolean checkForMatch(User user1, User user2) {
-        Optional<Swipe> mutualSwipe = swipeRepository.findBySwiperAndSwiped(user2, user1);
+        Optional<Swipe> mutualSwipe = swipeRepository.findBySwiperAndSwiped(user1, user2);
 
-        if (mutualSwipe.isPresent() && mutualSwipe.get().isLiked()) {
+        if (mutualSwipe.isPresent() && mutualSwipe.get().isMatch()) {
             createMatch(user1, user2);
             return true;
         }
@@ -92,7 +94,7 @@ public class MatchService {
 
     public List<Match> getUserMatches(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         return matchRepository.findActiveMatchesByUser(user);
     }
