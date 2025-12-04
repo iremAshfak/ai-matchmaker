@@ -1,6 +1,6 @@
 package ru.petproject.model.enums;
 
-public enum Genders {
+public enum Gender {
     MALE,
     FEMALE
 }
