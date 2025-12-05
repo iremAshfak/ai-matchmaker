@@ -1,13 +1,8 @@
 package ru.petproject.model;
 
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.petproject.model.enums.AuthRole;
-import ru.petproject.model.enums.Genders;
-
-import java.util.Collection;
-import java.util.List;
+import ru.petproject.model.enums.Gender;
 
 @Data
 public class User  {
@@ -19,9 +14,9 @@ public class User  {
 
     private String name;
 
-    private Genders gender;
+    private Gender gender;
 
-    private Genders preferredGender;
+    private Gender preferredGender;
 
     private Integer age;
 
