@@ -27,4 +27,14 @@ public class User  {
     private Double longitude;
 
     private AuthRole role;
+
+    public boolean hasLocation() {
+        return latitude != null && longitude != null;
+    }
+
+    public String getLocationString() {
+        return hasLocation()
+                ? String.format("%.6f, %.6f", latitude, longitude)
+                : "Не указано";
+    }
 }
