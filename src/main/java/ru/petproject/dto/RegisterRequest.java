@@ -3,6 +3,7 @@ package ru.petproject.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import ru.petproject.model.enums.Gender;
 
 @Data
 public class RegisterRequest {
@@ -17,7 +18,7 @@ public class RegisterRequest {
 
     private Integer age;
 
-    private String gender;
+    private Gender gender;
 
-    private String preferredGender;
+    private Gender preferredGender;
 }
