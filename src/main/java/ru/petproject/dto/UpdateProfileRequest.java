@@ -31,4 +31,11 @@ public class UpdateProfileRequest{
     private Double longitude;
 
     private AuthRole role;
+
+    public boolean isLocationValid() {
+        if (latitude == null && longitude == null) {
+            return true;
+        }
+        return latitude != null && longitude != null;
+    }
 }
