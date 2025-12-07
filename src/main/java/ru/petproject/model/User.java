@@ -28,6 +28,8 @@ public class User  {
 
     private AuthRole role;
 
+    private Boolean enabled;
+
     public boolean hasLocation() {
         return latitude != null && longitude != null;
     }
