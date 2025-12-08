@@ -2,51 +2,40 @@ package ru.petproject.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import ru.petproject.dto.RegisterRequest;
+import ru.petproject.dto.UpdateProfileRequest;
+import ru.petproject.dto.UserProfileResponse;
+import ru.petproject.model.User;
+import ru.petproject.service.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
-    private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    private UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterRequest request) {
+        User user = userService.register(request);
+        return ResponseEntity.ok(user);
     }
 
-    @PostMapping
-    public UserDTO create(@Valid @RequestBody UserDTO userDto) {
-        return userService.create(userDto);
+    @PutMapping("/profile")
+    public ResponseEntity<UserProfileResponse> updateProfile(@Valid @RequestBody UpdateProfileRequest request) {
+        Long userId = userService.getCurrentUserId();
+        UserProfileResponse updatedUser = userService.updateProfile(userId, request);
+        return ResponseEntity.ok(updatedUser);
     }
 
-    @GetMapping("/{userId}")
-    public UserDTO getUserById(@PathVariable Long userId) {
-        return userService.getUserById(userId);
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileResponse> getCurrentUser() {
+        UserProfileResponse user = userService.getCurrentUser();
+        return ResponseEntity.ok(user);
     }
 
-    @GetMapping
-    public List<UserDTO> findAll() {
-        return userService.findAll();
-    }
-
-    @PutMapping
-    public UserDTO update(@RequestBody UserDTO userDto) {
-        return userService.update(userDto);
-    }
-
-    @DeleteMapping("/{userId}")
-    public void remove(@PathVariable(name = "userId") Long id) {
-        userService.remove(id);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}/friends")
-    public List<UserDTO> getFriends(@PathVariable Long id) {
-        return userService.getFriends(id);
-    }
 }
 
 
