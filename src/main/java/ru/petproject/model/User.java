@@ -1,11 +1,16 @@
 package ru.petproject.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import ru.petproject.model.enums.AuthRole;
 import ru.petproject.model.enums.Gender;
 
+@Entity
 @Data
+@Table(name = "users")
 public class User  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
