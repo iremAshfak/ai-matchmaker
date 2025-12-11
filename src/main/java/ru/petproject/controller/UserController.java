@@ -10,7 +10,6 @@ import ru.petproject.dto.UpdateProfileRequest;
 import ru.petproject.dto.UserProfileResponse;
 import ru.petproject.model.User;
 import ru.petproject.service.UserService;
-
 import java.util.List;
 
 
