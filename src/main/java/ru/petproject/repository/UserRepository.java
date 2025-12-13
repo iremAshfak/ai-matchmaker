@@ -14,6 +14,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     boolean existsByEmail(String email);
 
+    @Query("SELECT u FROM User u WHERE u.id != :userId " +
+            "AND u.gender = :preferredGender " +
+            "AND u.id NOT IN (" +
+            "    SELECT s.swiped.id FROM Swipe s WHERE s.swiper.id = :userId" +
+            ") " +
+            "ORDER BY FUNCTION('ST_Distance', FUNCTION('POINT', u.latitude, u.longitude), " +
+            "FUNCTION('POINT', :lat, :lon)) ASC")
+    List<User> findPotentialMatches(@Param("userId") Long userId,
+                                    @Param("preferredGender") Gender preferredGender,
+                                    @Param("lat") Double latitude,
+                                    @Param("lon") Double longitude);
+
     @Query(value = "SELECT * FROM users u WHERE " +
             "u.latitude IS NOT NULL AND u.longitude IS NOT NULL AND " +
             "earth_distance(ll_to_earth(u.latitude, u.longitude), " +
