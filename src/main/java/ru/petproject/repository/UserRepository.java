@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.id != :userId " +
             "AND u.gender = :preferredGender " +
             "AND u.id NOT IN (" +
-            "    SELECT s.swiped.id FROM Swipe s WHERE s.swiper.id = :userId" +
+            "    SELECT s.user1.id FROM Swipe s WHERE s.user1.id = :userId" +
             ") " +
             "ORDER BY FUNCTION('ST_Distance', FUNCTION('POINT', u.latitude, u.longitude), " +
             "FUNCTION('POINT', :lat, :lon)) ASC")
