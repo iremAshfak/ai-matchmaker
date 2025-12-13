@@ -9,6 +9,9 @@ import ru.petproject.exception.NotFoundException;
 import ru.petproject.model.Match;
 import ru.petproject.model.Swipe;
 import ru.petproject.model.User;
+import ru.petproject.repository.MatchRepository;
+import ru.petproject.repository.SwipeRepository;
+import ru.petproject.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,14 +30,11 @@ public class MatchService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private NotificationService notificationService;
-
     public SwipeDTO swipe(Long user1Id, Long user2Id, boolean liked) {
-        User swiper = userRepository.findById(user1Id)
+        User user1 = userRepository.findById(user1Id)
                 .orElseThrow(() -> new NotFoundException("Swiper not found"));
 
-        User swiped = userRepository.findById(user2Id)
+        User user2 = userRepository.findById(user2Id)
                 .orElseThrow(() -> new NotFoundException("Swiped user not found"));
 
         Optional<Swipe> existingSwipe = swipeRepository.findByUsers(user1, user2);
@@ -43,15 +43,15 @@ public class MatchService {
         }
 
         Swipe swipe = new Swipe();
-        swipe.setUser1(swiper);
-        swipe.setUser2(swiped);
+        swipe.setUser1(user1);
+        swipe.setUser2(user2);
         swipe.setSwipeResult(liked);
         swipe.setSwipeTime(LocalDateTime.now());
         swipeRepository.save(swipe);
 
         boolean isMatch = false;
         if (liked) {
-            isMatch = checkForMatch(swiper, swiped);
+            isMatch = checkForMatch(user1, user2);
         }
 
         return new SwipeDTO(swipe, isMatch);
@@ -60,7 +60,7 @@ public class MatchService {
     private boolean checkForMatch(User user1, User user2) {
         Optional<Swipe> mutualSwipe = swipeRepository.findBySwiperAndSwiped(user1, user2);
 
-        if (mutualSwipe.isPresent() && mutualSwipe.get().isMatch()) {
+        if (mutualSwipe.isPresent() && mutualSwipe.get().getSwipeResult()) {
             createMatch(user1, user2);
             return true;
         }
@@ -74,9 +74,6 @@ public class MatchService {
         match.setUser2(user2);
         match.setMatchingTime(LocalDateTime.now());
         matchRepository.save(match);
-
-        notificationService.notifyAboutMatch(user1, user2);
-        notificationService.notifyAboutMatch(user2, user1);
     }
 
     public List<User> getPotentialMatches(Long userId) {
