@@ -32,14 +32,14 @@ public class MatchService {
 
     public SwipeDTO swipe(Long user1Id, Long user2Id, boolean liked) {
         User user1 = userRepository.findById(user1Id)
-                .orElseThrow(() -> new NotFoundException("Swiper not found"));
+                .orElseThrow(() -> new NotFoundException("Первый пользователь не найден"));
 
         User user2 = userRepository.findById(user2Id)
-                .orElseThrow(() -> new NotFoundException("Swiped user not found"));
+                .orElseThrow(() -> new NotFoundException("Второй пользователь не найден"));
 
         Optional<Swipe> existingSwipe = swipeRepository.findByUsers(user1, user2);
         if (existingSwipe.isPresent()) {
-            throw new DuplicateSwipeException("Already swiped this user");
+            throw new DuplicateSwipeException("Уже свайпнули этого пользователя");
         }
 
         Swipe swipe = new Swipe();
@@ -48,23 +48,19 @@ public class MatchService {
         swipe.setSwipeResult(liked);
         swipe.setSwipeTime(LocalDateTime.now());
         swipeRepository.save(swipe);
-
         boolean isMatch = false;
         if (liked) {
             isMatch = checkForMatch(user1, user2);
         }
-
         return new SwipeDTO(swipe, isMatch);
     }
 
     private boolean checkForMatch(User user1, User user2) {
-        Optional<Swipe> mutualSwipe = swipeRepository.findBySwiperAndSwiped(user1, user2);
-
+        Optional<Swipe> mutualSwipe = swipeRepository.findByUsers(user1, user2);
         if (mutualSwipe.isPresent() && mutualSwipe.get().getSwipeResult()) {
             createMatch(user1, user2);
             return true;
         }
-
         return false;
     }
 
@@ -78,9 +74,7 @@ public class MatchService {
 
     public List<User> getPotentialMatches(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
-
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
         return userRepository.findPotentialMatches(
                 user.getId(),
                 user.getPreferredGender(),
@@ -90,9 +84,8 @@ public class MatchService {
     }
 
     public List<Match> getUserMatches(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
-        return matchRepository.findActiveMatchesByUser(user);
+        userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+        return matchRepository.findActiveMatchesByUser(userId);
     }
 }
