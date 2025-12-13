@@ -37,7 +37,7 @@ public class MatchService {
         User user2 = userRepository.findById(user2Id)
                 .orElseThrow(() -> new NotFoundException("Второй пользователь не найден"));
 
-        Optional<Swipe> existingSwipe = swipeRepository.findByUsers(user1, user2);
+        Optional<Swipe> existingSwipe = swipeRepository.findByUser1AndUser2(user1, user2);
         if (existingSwipe.isPresent()) {
             throw new DuplicateSwipeException("Уже свайпнули этого пользователя");
         }
@@ -56,7 +56,7 @@ public class MatchService {
     }
 
     private boolean checkForMatch(User user1, User user2) {
-        Optional<Swipe> mutualSwipe = swipeRepository.findByUsers(user1, user2);
+        Optional<Swipe> mutualSwipe = swipeRepository.findByUser1AndUser2(user1, user2);
         if (mutualSwipe.isPresent() && mutualSwipe.get().getSwipeResult()) {
             createMatch(user1, user2);
             return true;
