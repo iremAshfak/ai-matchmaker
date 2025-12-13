@@ -18,4 +18,5 @@ public class Match {
     private User user2;
     
     private LocalDateTime matchingTime;
+    private Boolean active = true;
 }
