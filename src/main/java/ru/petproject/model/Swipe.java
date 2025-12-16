@@ -2,11 +2,13 @@ package ru.petproject.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Swipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,18 +23,4 @@ public class Swipe {
     private Boolean swipeResult;
 
     private LocalDateTime swipeTime;
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Swipe swipe = (Swipe) o;
-        return Objects.equals(id, swipe.id) && Objects.equals(user1, swipe.user1)
-                && Objects.equals(user2, swipe.user2) && Objects.equals(swipeResult, swipe.swipeResult)
-                && Objects.equals(swipeTime, swipe.swipeTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user1, user2, swipeResult, swipeTime);
-    }
 }
