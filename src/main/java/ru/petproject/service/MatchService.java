@@ -56,7 +56,7 @@ public class MatchService {
     }
 
     private boolean checkForMatch(User user1, User user2) {
-        Optional<Swipe> mutualSwipe = swipeRepository.findByUser1AndUser2(user1, user2);
+        Optional<Swipe> mutualSwipe = swipeRepository.findByUser1AndUser2(user2, user1);
         if (mutualSwipe.isPresent() && mutualSwipe.get().getSwipeResult()) {
             createMatch(user1, user2);
             return true;
