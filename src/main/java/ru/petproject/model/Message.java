@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import ru.petproject.model.enums.MessageStatus;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +24,9 @@ public class Message {
 
     private String messageText;
 
-    private LocalDateTime createdAt;
-}
+    private MessageStatus status;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime readAt;
+}
