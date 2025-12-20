@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.petproject.model.enums.MessageStatus;
-
 import java.time.LocalDateTime;
 
 @Entity
