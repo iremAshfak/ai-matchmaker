@@ -8,15 +8,25 @@ import ru.petproject.model.enums.Gender;
 @Data
 public class UserProfileResponse {
     private Long id;
+
     private String name;
+
     private Gender gender;
+
     private Gender preferredGender;
+
     private Integer age;
+
     private String description;
+
     private Double latitude;
+
     private Double longitude;
+
     private AuthRole role;
+
     private Boolean hasLocation;
+
     private Double distance;
 
     public static UserProfileResponse fromUser(User user) {
