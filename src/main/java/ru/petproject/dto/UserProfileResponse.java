@@ -34,20 +34,6 @@ public class UserProfileResponse {
         return response;
     }
 
-    public static UserProfileResponse getDistancefromUser(User user, Double currentLat, Double currentLon) {
-        UserProfileResponse response = fromUser(user);
-
-        if (currentLat != null && currentLon != null &&
-                user.getLatitude() != null && user.getLongitude() != null) {
-            response.setDistance(calculateDistance(
-                    currentLat, currentLon,
-                    user.getLatitude(), user.getLongitude()
-            ));
-        }
-
-        return response;
-    }
-
     public static Double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
 
