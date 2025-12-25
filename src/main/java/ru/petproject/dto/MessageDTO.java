@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 public class MessageDTO {
     private Long id;
 
-    private Long senderId;
+    private Long fromUserId;
 
-    private String senderName;
+    private String fromUserName;
 
-    private Long receiverId;
+    private Long toUserId;
 
-    private String receiverName;
+    private String toUserName;
 
     private String messageText;
 
