@@ -1,7 +1,7 @@
 package ru.petproject.service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.petproject.dto.SwipeDTO;
 import ru.petproject.exception.DuplicateSwipeException;
@@ -18,17 +18,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class MatchService {
-
-    @Autowired
-    private SwipeRepository swipeRepository;
-
-    @Autowired
-    private MatchRepository matchRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final SwipeRepository swipeRepository;
+    private final MatchRepository matchRepository;
+    private final UserRepository userRepository;
 
     public SwipeDTO swipe(Long user1Id, Long user2Id, boolean liked) {
         User user1 = userRepository.findById(user1Id)
