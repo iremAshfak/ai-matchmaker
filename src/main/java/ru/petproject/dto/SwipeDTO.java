@@ -12,5 +12,6 @@ import ru.petproject.model.Swipe;
 @AllArgsConstructor
 public class SwipeDTO {
     private Swipe swipe;
+
     private boolean isMatch;
 }
