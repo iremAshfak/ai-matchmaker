@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import ru.petproject.model.Swipe;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SwipeDTO {
     private Swipe swipe;
     private boolean isMatch;
