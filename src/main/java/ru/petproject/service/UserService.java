@@ -12,11 +12,9 @@ import ru.petproject.dto.*;
 import ru.petproject.model.User;
 import ru.petproject.model.enums.AuthRole;
 import ru.petproject.repository.UserRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import static ru.petproject.dto.UserProfileResponse.fromUser;
 
 
