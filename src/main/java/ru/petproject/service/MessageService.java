@@ -41,12 +41,9 @@ public class MessageService {
     public MessageDTO sendMessage(Long senderId, SendMessageRequest request) {
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new NotFoundException("Отправитель не найден"));
-
         User receiver = userRepository.findById(request.getReceiverId())
                 .orElseThrow(() -> new NotFoundException("Получатель не найден"));
-
         validateCanMessage(sender, receiver);
-
         Message message = Message.builder()
                 .fromUser(sender)
                 .toUser(receiver)
@@ -54,19 +51,16 @@ public class MessageService {
                 .status(MessageStatus.SENT)
                 .createdAt(LocalDateTime.now())
                 .build();
-
         if (request.getReplyToId() != null) {
             Message replyTo = messageRepository.findById(request.getReplyToId())
                     .orElseThrow(() -> new NotFoundException("Сообщение для ответа не найдено"));
             validateMessageBelongsToChat(replyTo, senderId, request.getReceiverId());
             message.setReplyTo(replyTo);
         }
-
         Message savedMessage = messageRepository.save(message);
         log.info("Сообщение отправлено от {} к {}", senderId, request.getReceiverId());
         savedMessage.setStatus(MessageStatus.DELIVERED);
         notifyNewMessage(savedMessage);
-
         return convertToDTO(savedMessage, senderId);
     }
 
@@ -164,7 +158,6 @@ public class MessageService {
         Map<Long, MessageDTO> lastMessages = new HashMap<>();
         boolean hasNewMessages = false;
 
-        // Для каждого чата проверяем непрочитанные сообщения
         for (Map.Entry<Long, LocalDateTime> entry : lastSeenMap.entrySet()) {
             Long partnerId = entry.getKey();
             LocalDateTime lastSeen = entry.getValue();
