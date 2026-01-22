@@ -169,7 +169,6 @@ public class MessageService {
                 hasNewMessages = true;
                 unreadCounts.put(partnerId, unreadCount);
 
-                // Получаем последнее сообщение
                 Optional<Message> lastMessage = messageRepository
                         .findLastMessageBetweenUsers(userId, userId, partnerId);
 
