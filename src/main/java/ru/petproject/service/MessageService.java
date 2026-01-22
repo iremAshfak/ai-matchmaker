@@ -177,7 +177,6 @@ public class MessageService {
             }
         }
 
-        // Также проверяем сообщения от новых пользователей
         List<Long> newSenders = messageRepository.findNewSenders(userId,
                 lastSeenMap.values().stream().max(LocalDateTime::compareTo).orElse(now.minusDays(1)));
 
