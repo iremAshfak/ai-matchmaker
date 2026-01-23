@@ -209,12 +209,9 @@ public class MessageService {
         Long receiverId = message.getToUser().getId();
         List<DeferredResult<ResponseEntity<List<MessageDTO>>>> results =
                 deferredResults.get(receiverId);
-
         if (results != null && !results.isEmpty()) {
-            // Выполняем в отдельном потоке
             asyncExecutor.submit(() -> {
                 List<MessageDTO> messageList = List.of(convertToDTO(message, receiverId));
-
                 for (DeferredResult<ResponseEntity<List<MessageDTO>>> result : results) {
                     if (!result.isSetOrExpired()) {
                         try {
@@ -224,8 +221,6 @@ public class MessageService {
                         }
                     }
                 }
-
-                // Очищаем список после уведомления
                 deferredResults.remove(receiverId);
             });
         }
