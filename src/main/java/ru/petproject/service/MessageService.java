@@ -312,7 +312,6 @@ public class MessageService {
     public int getUnreadMessagesCount(Long userId) {
         return messageRepository.countUnreadMessages(userId, MessageStatus.DELIVERED);
     }
-
     private MessageDTO convertToDTO(Message message, Long currentUserId) {
         MessageDTO dto = MessageDTO.builder()
                 .id(message.getId())
@@ -325,12 +324,10 @@ public class MessageService {
                 .createdAt(message.getCreatedAt())
                 .readAt(message.getReadAt())
                 .build();
-
         if (message.getReplyTo() != null) {
             dto.setReplyToId(message.getReplyTo().getId());
             dto.setReplyToMessageText(message.getReplyTo().getMessageText());
         }
-
         return dto;
     }
 }
