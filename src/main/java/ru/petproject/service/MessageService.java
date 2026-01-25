@@ -179,23 +179,19 @@ public class MessageService {
 
         List<Long> newSenders = messageRepository.findNewSenders(userId,
                 lastSeenMap.values().stream().max(LocalDateTime::compareTo).orElse(now.minusDays(1)));
-
         if (!newSenders.isEmpty()) {
             hasNewMessages = true;
             for (Long senderId : newSenders) {
                 if (!lastSeenMap.containsKey(senderId)) {
                     unreadCounts.put(senderId,
                             messageRepository.countUnreadMessagesFromUser(userId, senderId, null));
-
                     Optional<Message> lastMessage = messageRepository
                             .findLastMessageBetweenUsers(userId, userId, senderId);
-
                     lastMessage.ifPresent(message ->
                             lastMessages.put(senderId, convertToDTO(message, userId)));
                 }
             }
         }
-
         return NewMessagesCheckDTO.builder()
                 .hasNewMessages(hasNewMessages)
                 .unreadCounts(unreadCounts)
