@@ -157,21 +157,16 @@ public class MessageService {
         Map<Long, Integer> unreadCounts = new HashMap<>();
         Map<Long, MessageDTO> lastMessages = new HashMap<>();
         boolean hasNewMessages = false;
-
         for (Map.Entry<Long, LocalDateTime> entry : lastSeenMap.entrySet()) {
             Long partnerId = entry.getKey();
             LocalDateTime lastSeen = entry.getValue();
-
             int unreadCount = messageRepository.countUnreadMessagesFromUser(
                     userId, partnerId, lastSeen);
-
             if (unreadCount > 0) {
                 hasNewMessages = true;
                 unreadCounts.put(partnerId, unreadCount);
-
                 Optional<Message> lastMessage = messageRepository
                         .findLastMessageBetweenUsers(userId, userId, partnerId);
-
                 lastMessage.ifPresent(message ->
                         lastMessages.put(partnerId, convertToDTO(message, userId)));
             }
