@@ -12,7 +12,6 @@ import ru.petproject.model.User;
 import ru.petproject.repository.MatchRepository;
 import ru.petproject.repository.SwipeRepository;
 import ru.petproject.repository.UserRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
