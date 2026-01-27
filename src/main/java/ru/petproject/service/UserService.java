@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import static ru.petproject.dto.UserProfileResponse.fromUser;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
