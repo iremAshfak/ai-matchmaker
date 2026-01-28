@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.petproject.model.Swipe;
 import ru.petproject.model.User;
-
 import java.util.List;
 import java.util.Optional;
 
