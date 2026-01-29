@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.petproject.model.User;
 import ru.petproject.model.enums.Gender;
-
 import java.util.List;
 import java.util.Optional;
 
