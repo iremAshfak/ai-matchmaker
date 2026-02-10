@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.petproject.model.Message;
 import ru.petproject.model.enums.MessageStatus;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
